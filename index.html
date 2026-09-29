@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>ATLAS Connect Funding Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Same board as the Gate 1 page: summary and key first, the detail in tabs below. */
+:root{
+  --bg:#F3F5F4;--surface:#FFFFFF;--surface-2:#EDF1EF;--ink:#14201B;--muted:#56665F;--faint:#8A9892;--line:#D6DEDA;
+  --accent:#1B6752;--accent-ink:#FFFFFF;--accent-weak:#E1EFE9;
+  --now:#1B6752;--now-bg:#DDEFE7;--after:#2B5F8A;--after-bg:#DDE8F2;--partner:#63489A;--partner-bg:#E9E3F4;
+  --cond:#9A600E;--cond-bg:#F6EAD6;--no:#6E7572;--no-bg:#E6E9E7;
+  --keep:#1B6752;--later:#9A600E;--strike:#A8322A;--strike-bg:#F7E1DE;
+  --thesis:#A8322A;--shadow:0 1px 2px rgba(20,32,27,.06),0 4px 14px rgba(20,32,27,.05);
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --cond-font:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#0E1412;--surface:#151E1B;--surface-2:#1B2622;--ink:#E4ECE8;--muted:#9FB0A9;--faint:#6F817A;--line:#2A3833;
+  --accent:#58C0A0;--accent-ink:#0E1412;--accent-weak:#1C332C;
+  --now:#6FD0AF;--now-bg:#193A30;--after:#8DB9E3;--after-bg:#1B2C3D;--partner:#BCA6EA;--partner-bg:#2A2340;
+  --cond:#E3B169;--cond-bg:#3A2C15;--no:#A7B0AC;--no-bg:#252D2A;--keep:#6FD0AF;--later:#E3B169;--strike:#F08A80;--strike-bg:#3A1F1C;--thesis:#F08A80;
+  --shadow:0 1px 2px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0E1412;--surface:#151E1B;--surface-2:#1B2622;--ink:#E4ECE8;--muted:#9FB0A9;--faint:#6F817A;--line:#2A3833;
+  --accent:#58C0A0;--accent-ink:#0E1412;--accent-weak:#1C332C;
+  --now:#6FD0AF;--now-bg:#193A30;--after:#8DB9E3;--after-bg:#1B2C3D;--partner:#BCA6EA;--partner-bg:#2A2340;
+  --cond:#E3B169;--cond-bg:#3A2C15;--no:#A7B0AC;--no-bg:#252D2A;--keep:#6FD0AF;--later:#E3B169;--strike:#F08A80;--strike-bg:#3A1F1C;--thesis:#F08A80;
+  --shadow:0 1px 2px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:22px 64px}
+@media (max-width:520px){.wrap{padding-inline:16px}}
+h1,h2,h3{font-family:var(--cond-font);font-weight:600;text-wrap:balance;margin:0}
+h1{font-size:30px;letter-spacing:-.01em;line-height:1.15}
+h2{font-size:19px}
+h3{font-size:15px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:68ch;margin:8px 0 0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+.top{display:grid;gap:18px;grid-template-columns:1fr auto;align-items:end}
+@media (max-width:820px){.top{grid-template-columns:1fr}}
+.stats{display:flex;flex-wrap:wrap;gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:118px}
+.stat b{display:block;font:600 22px/1.1 var(--cond-font);font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:12px}
+.decide{margin-top:22px;display:grid;gap:12px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:980px){.decide{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .num{font:600 12px/1 var(--mono);color:var(--accent);letter-spacing:.04em}
+.card p{margin:0;color:var(--muted)}
+.keylist{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.keylist li{display:grid;grid-template-columns:104px 1fr;gap:10px;align-items:start;color:var(--muted);font-size:13px;line-height:1.45}
+.keylist .chip{justify-self:start}
+.opt:focus-visible,.dec:focus-visible,.tab:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card textarea{width:100%;min-height:64px;resize:vertical;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);font:13px var(--sans);padding:8px}
+.status{font-size:12px;color:var(--muted);min-height:18px}
+.status.ok{color:var(--keep)}.status.err{color:var(--strike)}
+.banner{margin-top:14px;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;color:var(--muted);background:var(--surface)}
+.tabs{margin-top:26px;display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line)}
+.tab{border:0;background:none;color:var(--muted);font:600 14px var(--cond-font);padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .ct{font:500 11px var(--mono);color:var(--faint);margin-left:6px}
+.panel{padding-top:16px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.toolbar select,.toolbar input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 9px;font:13px var(--sans)}
+.toolbar input{min-width:200px;flex:1 1 200px;max-width:340px}
+.toolbar .sp{flex:1}
+.tally{font:500 12px var(--mono);color:var(--muted)}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:980px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{font:600 12px var(--cond-font);letter-spacing:.03em;color:var(--muted);text-transform:uppercase;background:var(--surface-2);position:sticky;top:0;z-index:1}
+tr:last-child td{border-bottom:0}
+tr.struck td{opacity:.55}
+tr.struck td.name b{text-decoration:line-through}
+td.name b{font-weight:600;display:block}
+td.name small{color:var(--muted)}
+.chip{display:inline-block;border-radius:6px;padding:1px 7px;font:600 11px/1.6 var(--mono);white-space:nowrap}
+.f-open{color:var(--now);background:var(--now-bg)}.f-after{color:var(--after);background:var(--after-bg)}.f-partner{color:var(--partner);background:var(--partner-bg)}.f-depends{color:var(--cond);background:var(--cond-bg)}.f-no{color:var(--no);background:var(--no-bg)}
+.p-high{color:var(--accent-ink);background:var(--accent)}.p-medium{color:var(--accent);background:var(--accent-weak)}.p-low{color:var(--muted);background:var(--surface-2);border:1px solid var(--line)}
+.st{font:500 11px var(--mono);color:var(--faint)}
+.vtext{color:var(--muted);font-size:12.5px;margin-top:4px;max-width:52ch}
+.decs{display:flex;gap:4px}
+.dec{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:7px;padding:4px 8px;font:600 12px var(--sans);cursor:pointer}
+.dec[data-d="keep"][aria-pressed="true"]{background:var(--keep);border-color:var(--keep);color:var(--accent-ink)}
+.dec[data-d="later"][aria-pressed="true"]{background:var(--later);border-color:var(--later);color:var(--accent-ink)}
+.dec[data-d="drop"][aria-pressed="true"]{background:var(--strike);border-color:var(--strike);color:var(--accent-ink)}
+td select{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:7px;padding:3px 6px;font:12px var(--sans)}
+details.more{margin-top:5px}
+details.more summary{cursor:pointer;color:var(--accent);font-size:12px}
+details.more div{margin-top:6px;font-size:12.5px;color:var(--muted);max-width:60ch}
+.timeline{display:grid;gap:18px}
+.month h3{margin-bottom:8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ev{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:6px}
+.ev > div{min-width:0}
+.ev.thesis{border-color:var(--thesis);background:var(--strike-bg)}
+.ev .dt{font:600 13px var(--mono)}
+.ev .dt small{display:block;font-weight:400;color:var(--muted)}
+.ev b{font-weight:600}
+.ev p{margin:3px 0 0;color:var(--muted);font-size:12.5px}
+.matrix td,.matrix th{min-width:70px}
+.bar{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--surface-2);min-width:160px}
+.bar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 0;color:var(--muted);font-size:12px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.grid2{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+.list{margin:0;padding-left:18px;color:var(--muted)}
+.list li{margin:4px 0}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px 18px;margin:0}
+.gloss div{display:grid;grid-template-columns:58px 1fr;gap:8px;color:var(--muted);font-size:13px}
+.gloss dt{font:600 12px/1.6 var(--mono);color:var(--ink)}
+.gloss dd{margin:0}
+.foot{margin-top:28px;color:var(--faint);font-size:12px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">ATLAS Connect · Funding map · Checked 28 Sep 2026</div>
+      <h1>Funding options</h1>
+      <p class="lede">Schemes that could pay for ATLAS Connect: Norwegian, Nordic and EU grants, health-sector funds, foundations, investors and prizes. Each is read for fit as things stood on 28 September 2026, for a PhD candidate at the University of Agder with no company registered yet.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div class="decide">
+    <div class="card">
+      <span class="num">HOW TO READ</span>
+      <h3>Fit</h3>
+      <ul class="keylist">
+        <li><span class="chip f-open">Open now</span><span>Can apply as things stand.</span></li>
+        <li><span class="chip f-after">After a step</span><span>Opens once something is in place: a company, a partner or the finished PhD.</span></li>
+        <li><span class="chip f-partner">Via a partner</span><span>A hospital, municipality or university applies, with ATLAS Connect in the project.</span></li>
+        <li><span class="chip f-depends">Depends</span><span>Turns on personal details such as citizenship or residence.</span></li>
+        <li><span class="chip f-no">Not a fit</span><span>Kept so it is not looked up again.</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="num">HOW TO READ</span>
+      <h3>Priority</h3>
+      <ul class="keylist">
+        <li><span class="chip p-high">High</span><span>Open now or within about a year, or a partner route is clear.</span></li>
+        <li><span class="chip p-medium">Medium</span><span>One to two years away, a partner route still unclear, or an investor.</span></li>
+        <li><span class="chip p-low">Low</span><span>Closed or not a fit but relevant, more than two years off, or a service, event or prize.</span></li>
+      </ul>
+      <p style="margin-top:4px">Groups sort the options by priority, with the ten schemes already studied in depth first and the high-priority schemes with a deadline before April 2027 next.</p>
+    </div>
+    <div class="card">
+      <span class="num">YOUR SHORTLIST</span>
+      <h3>Marks and notes</h3>
+      <p>Mark options Keep, Later or Drop and move them between groups. Marks save as you click.</p>
+      <div class="status" id="planStatus"></div>
+      <label class="eyebrow" for="notes">Notes</label>
+      <textarea id="notes" placeholder="Thoughts, questions, people to ask"></textarea>
+      <div class="status" id="noteStatus"></div>
+    </div>
+  </div>
+  <div class="banner" id="banner" hidden></div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-plan" aria-controls="p-plan" aria-selected="true">Options<span class="ct" id="c-plan"></span></button>
+    <button class="tab" role="tab" id="t-soon" aria-controls="p-soon" aria-selected="false">Next 90 days<span class="ct" id="c-soon"></span></button>
+    <button class="tab" role="tab" id="t-new" aria-controls="p-new" aria-selected="false">New finds<span class="ct" id="c-new"></span></button>
+    <button class="tab" role="tab" id="t-counts" aria-controls="p-counts" aria-selected="false">Landscape</button>
+    <button class="tab" role="tab" id="t-sat" aria-controls="p-sat" aria-selected="false">About this map</button>
+  </div>
+
+  <section class="panel" id="p-plan" role="tabpanel" aria-labelledby="t-plan">
+    <div class="toolbar">
+      <select id="fGroup" aria-label="Group"><option value="">All groups</option></select>
+      <select id="fFit" aria-label="Fit"><option value="">Any fit</option></select>
+      <select id="fPrio" aria-label="Priority"><option value="">Any priority</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
+      <select id="fFam" aria-label="Funder type"><option value="">All funder types</option></select>
+      <select id="fRoute" aria-label="Route"><option value="">All routes</option></select>
+      <select id="fMark" aria-label="Mark"><option value="">Any mark</option><option value="none">Not marked</option><option value="keep">Keep</option><option value="later">Later</option><option value="drop">Drop</option></select>
+      <input id="fQ" type="search" placeholder="Search scheme or funder" aria-label="Search">
+      <span class="sp"></span><span class="tally" id="tally"></span>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>#</th><th>Group</th><th>Scheme</th><th>Fit</th><th>Next deadline</th><th>Priority</th><th>Mark</th></tr></thead>
+      <tbody id="planBody"></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" id="p-soon" role="tabpanel" aria-labelledby="t-soon" hidden>
+    <p class="lede" style="margin:0 0 16px">Deadlines to 31 December 2026 for options that fit, with the October PhD deadlines marked.</p>
+    <div class="timeline" id="soonList"></div>
+  </section>
+
+  <section class="panel" id="p-new" role="tabpanel" aria-labelledby="t-new" hidden>
+    <p class="lede" style="margin:0 0 12px">Options found in the September search that were not on the first shortlist.</p>
+    <div class="toolbar">
+      <select id="nFam" aria-label="Funder type"><option value="">All funder types</option></select>
+      <span class="sp"></span><span class="tally" id="nTally"></span>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Scheme</th><th>Fit</th><th>Next date or cycle</th><th>Priority</th></tr></thead>
+      <tbody id="newBody"></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" id="p-counts" role="tabpanel" aria-labelledby="t-counts" hidden>
+    <div class="tablewrap"><table class="matrix">
+      <thead><tr><th>Funder type</th><th>Schemes</th><th>Open now</th><th>After a step</th><th>Via a partner</th><th>Depends</th><th>Not a fit</th><th>Share by fit</th></tr></thead>
+      <tbody id="famBody"></tbody>
+    </table></div>
+    <div class="legend"><span><i style="background:var(--now)"></i>Open now</span><span><i style="background:var(--after)"></i>After a step</span><span><i style="background:var(--partner)"></i>Via a partner</span><span><i style="background:var(--cond)"></i>Depends</span><span><i style="background:var(--no)"></i>Not a fit</span></div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card"><h3>By route</h3><div id="routeBars"></div></div>
+      <div class="card"><h3>By priority</h3><div id="prioBars"></div></div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-sat" role="tabpanel" aria-labelledby="t-sat" hidden>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Pass</th><th>How</th><th>Options added</th><th>Could fit</th></tr></thead>
+      <tbody id="satBody"></tbody>
+    </table></div>
+    <p class="lede">The map is not complete yet. Each search pass still found options that could fit. Public funders in health, Agder and the foundations look close to complete. Investors are open-ended.</p>
+    <div class="grid2" style="margin-top:14px">
+      <div class="card"><h3>Still to check</h3><ul class="list">
+        <li>UiA's internal funding pages: internal funds, research-stay support and innovation support.</li>
+        <li>KS research and innovation pages (KS FoU and KS prizes).</li>
+        <li>The foundation register's search by purpose (Stiftelsesregisteret).</li>
+        <li>The Interreg Öresund-Kattegat-Skagerrak programme site.</li>
+        <li>The EU Digital Europe work programme 2025 to 2027, so 2027 calls there are not listed.</li>
+      </ul></div>
+      <div class="card"><h3>How this was checked</h3><ul class="list">
+        <li>Every scheme on the first shortlist is on the map.</li>
+        <li>112 entries were re-checked against the funder's own page; three fit labels were corrected.</li>
+        <li>Built from funders' public pages and published lists of funding sources; no paid funding database was used.</li>
+      </ul></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h3>Abbreviations</h3>
+      <dl class="gloss">
+        <div><dt>AS</dt><dd>Limited company (aksjeselskap)</dd></div>
+        <div><dt>ENK</dt><dd>Sole proprietorship (enkeltpersonforetak)</dd></div>
+        <div><dt>UiA</dt><dd>University of Agder</dd></div>
+        <div><dt>SSHF</dt><dd>Sørlandet sykehus, the Agder hospital trust</dd></div>
+        <div><dt>DPS</dt><dd>District psychiatric centre</dd></div>
+        <div><dt>GP</dt><dd>General practitioner (fastlege)</dd></div>
+        <div><dt>RCN</dt><dd>Research Council of Norway (Forskningsrådet)</dd></div>
+        <div><dt>IP</dt><dd>Intellectual property: who owns the solution</dd></div>
+        <div><dt>JTC</dt><dd>Joint transnational call, funded by several countries together</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <p class="foot">Read from each funder's own pages on 28 September 2026. Dates marked "estimate" are inferred from earlier rounds; confirm on the funder's page before acting.</p>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="data.js"></script>
+<script>
+(function(){
+  var dataEl = document.getElementById('data');
+  var D = dataEl ? JSON.parse(dataEl.textContent) : window.FUNDMAP;
+  var FAMS = D.fams, plan = D.plan, marks = {}, notes = {}, db = null, canWrite = true, local = false;
+  var FITL = {open:'Open now', after:'After a step', partner:'Via a partner', depends:'Depends', no:'Not a fit'};
+  var FITC = {open:'f-open', after:'f-after', partner:'f-partner', depends:'f-depends', no:'f-no'};
+  var PRIOL = {high:'High', medium:'Medium', low:'Low', none:'Not relevant'};
+  var PRIOC = {high:'p-high', medium:'p-medium', low:'p-low'};
+  var ROUTEL = {company:'Company', partner:'Through a partner', career:'Research career', buying:'Public buying', investors:'Investors'};
+  var GROUPS = ['Studied', 'Before April', 'High', 'Medium', 'Low'];
+  var GROUPLONG = ['Studied in depth', 'Deadline before April', 'High priority', 'Medium priority', 'Low priority'];
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function cut(s, n){ s = s || ''; return s.length > n ? s.slice(0, n - 3) + '...' : s; }
+  function fitChip(f){ return '<span class="chip '+FITC[f]+'">'+FITL[f]+'</span>'; }
+  function prioChip(p){ return '<span class="chip '+(PRIOC[p]||'p-low')+'">'+PRIOL[p]+'</span>'; }
+  function fmtDate(s){ if(!s) return '<span class="st">rolling or not set</span>'; var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; var p=s.split('-'); return '<span class="mono">'+(+p[2])+' '+m[+p[1]-1]+' '+p[0]+'</span>'; }
+  var toastT;
+  function toast(msg){ var t=$('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove('on'); }, 1600); }
+
+  // stats
+  var c = D.counts, soonApr = plan.filter(function(r){ return r.group === 1; }).length;
+  $('stats').innerHTML = [[c.total,'schemes'],[c.funders,'funders'],[plan.length,'worth a look'],[soonApr,'deadlines before April']].map(function(s){ return '<div class="stat"><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'; }).join('');
+  $('c-plan').textContent = plan.length; $('c-soon').textContent = D.soon.length; $('c-new').textContent = D.newfinds.length;
+
+  // selects
+  function addOpt(id, v, t){ var o=document.createElement('option'); o.value=v; o.textContent=t; $(id).appendChild(o); }
+  D.famorder.forEach(function(k){ addOpt('fFam', k, FAMS[k]); addOpt('nFam', k, FAMS[k]); });
+  GROUPLONG.forEach(function(t, i){ addOpt('fGroup', String(i), t); });
+  Object.keys(FITL).forEach(function(k){ addOpt('fFit', k, FITL[k]); });
+  Object.keys(ROUTEL).forEach(function(k){ addOpt('fRoute', k, ROUTEL[k]); });
+
+  // options table
+  function effGroup(r){ var d=marks[r.id]; return d && d.group !== undefined && d.group !== null && d.group !== '' ? +d.group : r.group; }
+  function renderPlan(){
+    var fg=$('fGroup').value, ff=$('fFit').value, fp=$('fPrio').value, fa=$('fFam').value, fr=$('fRoute').value, fm=$('fMark').value, q=$('fQ').value.trim().toLowerCase();
+    var rows = plan.slice().sort(function(a,b){ return effGroup(a)-effGroup(b) || a.order-b.order; });
+    var out=[], n=0, tally={keep:0,later:0,drop:0};
+    Object.keys(marks).forEach(function(k){ var m=marks[k]&&marks[k].mark; if(tally[m]!==undefined) tally[m]++; });
+    rows.forEach(function(r){
+      var d=marks[r.id]||{}, mark=d.mark||'', g=effGroup(r);
+      if(fg!=='' && String(g)!==fg) return; if(ff && r.fit!==ff) return; if(fp && r.prio!==fp) return; if(fa && r.fam!==fa) return; if(fr && r.route!==fr) return;
+      if(fm==='none' && mark) return; if(fm && fm!=='none' && mark!==fm) return;
+      if(q && (r.name+' '+r.funder).toLowerCase().indexOf(q)<0) return;
+      n++;
+      var gsel='<select data-g="'+r.id+'" aria-label="Group for '+esc(r.name)+'">'+GROUPS.map(function(t,x){ return '<option value="'+x+'"'+(x===g?' selected':'')+'>'+t+'</option>'; }).join('')+'</select>';
+      var decs='<div class="decs" role="group" aria-label="Mark '+esc(r.name)+'">'+['keep','later','drop'].map(function(x){ return '<button class="dec" data-d="'+x+'" data-i="'+r.id+'" aria-pressed="'+(mark===x)+'">'+x.charAt(0).toUpperCase()+x.slice(1)+'</button>'; }).join('')+'</div>';
+      var more='<details class="more"><summary>Details</summary><div>'+esc(r.text)+'<br><b>Money:</b> '+esc(r.money||'not published')+'<br><b>Next:</b> '+esc(r.next||'not published')+'<br><b>Route:</b> '+esc(ROUTEL[r.route]||'')+(r.url?'<br><a href="'+esc(r.url)+'" target="_blank" rel="noopener">Funder page</a>':'')+'</div></details>';
+      out.push('<tr class="'+(mark==='drop'?'struck':'')+'"><td class="mono">'+r.order+'</td><td>'+gsel+'</td><td class="name"><b>'+esc(r.name)+'</b><small>'+esc(r.funder)+' · '+esc(FAMS[r.fam])+'</small>'+more+'</td><td>'+fitChip(r.fit)+'<div class="vtext">'+esc(cut(r.text,120))+'</div></td><td>'+fmtDate(r.date)+'</td><td>'+prioChip(r.prio)+'</td><td>'+decs+'</td></tr>');
+    });
+    $('planBody').innerHTML = out.join('') || '<tr><td colspan="7" class="st">No options match these filters.</td></tr>';
+    $('tally').textContent = n+' shown · '+tally.keep+' keep · '+tally.later+' later · '+tally.drop+' drop';
+  }
+  ['fGroup','fFit','fPrio','fFam','fRoute','fMark'].forEach(function(id){ $(id).addEventListener('change', renderPlan); });
+  $('fQ').addEventListener('input', renderPlan);
+
+  // one write at a time per document; a newer body waits and replaces any queued one
+  var inflight = {}, queued = {};
+  function writeDoc(path, body, ok, bad){
+    if(inflight[path]){ queued[path] = [body, ok, bad]; return; }
+    inflight[path] = true;
+    db.doc(path).set(body).then(ok, bad).then(function(){
+      inflight[path] = false;
+      var q = queued[path]; if(q){ delete queued[path]; writeDoc(path, q[0], q[1], q[2]); }
+    });
+  }
+  function readOnly(){
+    canWrite = false; $('banner').hidden = false;
+    $('banner').textContent = 'You can see the marks here but not change them.';
+  }
+  // browser storage, used when this view has no page database (for example the public web copy)
+  var LS_KEY = 'atlas-funding-map:v1';
+  function lsLoad(){ try{ var s = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); marks = s.marks || {}; notes = s.notes || {}; return true; }catch(e){ return false; } }
+  function lsSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({marks: marks, notes: notes})); return true; }catch(e){ return false; } }
+  function useLocal(){
+    if(!lsLoad()){ canWrite = false; $('banner').hidden = false; $('banner').textContent = 'Marks and notes cannot be saved in this browser. Filters and tabs still work.'; return; }
+    local = true; renderPlan(); renderNotes();
+    $('planStatus').textContent = 'Marks save in this browser as you click.'; $('planStatus').className = 'status ok';
+  }
+  function save(id, patch){
+    var cur = Object.assign({}, marks[id] || {}, patch, {at: new Date().toISOString()});
+    marks[id] = cur; renderPlan();
+    if(local){
+      if(lsSave()){ toast('Saved'); } else { $('planStatus').textContent='Could not save in this browser.'; $('planStatus').className='status err'; }
+      return;
+    }
+    if(!db || !canWrite){ $('planStatus').textContent='Not saved: marks cannot be stored in this view.'; $('planStatus').className='status err'; return; }
+    writeDoc('marks/'+id, cur, function(){ toast('Saved'); $('planStatus').textContent='Marks save as you click.'; $('planStatus').className='status ok'; },
+      function(e){ $('planStatus').textContent='Could not save ('+(e&&e.code||'error')+').'; $('planStatus').className='status err'; if(e&&e.code==='invalid_argument'){ readOnly(); } });
+  }
+  $('planBody').addEventListener('click', function(e){
+    var b = e.target.closest('.dec'); if(!b) return;
+    var id=b.getAttribute('data-i'), d=b.getAttribute('data-d'), cur=(marks[id]||{}).mark;
+    save(id, {mark: cur===d ? '' : d});
+  });
+  $('planBody').addEventListener('change', function(e){
+    var s = e.target.closest('select[data-g]'); if(!s) return;
+    save(s.getAttribute('data-g'), {group: +s.value});
+  });
+
+  // notes
+  function renderNotes(){ if(document.activeElement !== $('notes')) $('notes').value = notes.note || ''; }
+  function saveNotes(){
+    clearTimeout(noteT);
+    var v = $('notes').value; if(v === (notes.note || '')) return;
+    notes = {note: v, at: new Date().toISOString()};
+    if(local){
+      if(lsSave()){ $('noteStatus').textContent='Saved in this browser.'; $('noteStatus').className='status ok'; }
+      else { $('noteStatus').textContent='Could not save in this browser.'; $('noteStatus').className='status err'; }
+      return;
+    }
+    if(!db || !canWrite){ $('noteStatus').textContent='Not saved: notes cannot be stored in this view.'; $('noteStatus').className='status err'; return; }
+    writeDoc('page/notes', notes, function(){ $('noteStatus').textContent='Saved.'; $('noteStatus').className='status ok'; },
+      function(e){ $('noteStatus').textContent='Could not save ('+(e&&e.code||'error')+').'; $('noteStatus').className='status err'; if(e&&e.code==='invalid_argument'){ readOnly(); } });
+  }
+  var noteT;
+  $('notes').addEventListener('input', function(){ clearTimeout(noteT); noteT = setTimeout(saveNotes, 900); });
+  $('notes').addEventListener('change', saveNotes);
+
+  // next 90 days
+  (function(){
+    var items = D.soon.map(function(r){ return {date:r.soon, r:r}; }).concat(D.busy.map(function(t){ return {date:t.date, t:t}; }));
+    items.sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+    var months={}, order=[], mn=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    items.forEach(function(it){ var k=it.date.slice(0,7); if(!months[k]){ months[k]=[]; order.push(k); } months[k].push(it); });
+    $('soonList').innerHTML = order.map(function(k){
+      var p=k.split('-');
+      return '<div class="month"><h3>'+mn[+p[1]-1]+' '+p[0]+'</h3>'+months[k].map(function(it){
+        var day='<div class="dt">'+(+it.date.slice(8))+' '+mn[+it.date.slice(5,7)-1].slice(0,3)+'<small>'+it.date.slice(0,4)+'</small></div>';
+        if(it.t) return '<div class="ev thesis">'+day+'<div><b>'+esc(it.t.what)+'</b><p>PhD work: weigh any application against this.</p></div></div>';
+        var r=it.r;
+        return '<div class="ev">'+day+'<div>'+fitChip(r.fit)+' <b>'+esc(r.name)+'</b><p>'+esc(cut(r.text,220))+'</p></div></div>';
+      }).join('')+'</div>';
+    }).join('');
+  })();
+
+  // new finds
+  function renderNew(){
+    var ff=$('nFam').value, n=0;
+    $('newBody').innerHTML = D.newfinds.filter(function(r){ return !ff || r.fam===ff; }).map(function(r){ n++;
+      return '<tr><td class="name"><b>'+esc(r.name)+'</b><small>'+esc(r.funder)+' · '+esc(FAMS[r.fam])+' · '+esc(ROUTEL[r.route]||'')+'</small></td><td>'+fitChip(r.fit)+'<div class="vtext">'+esc(cut(r.text,140))+'</div></td><td class="vtext">'+esc(r.next)+'</td><td>'+prioChip(r.prio)+'</td></tr>'; }).join('');
+    $('nTally').textContent = n+' options';
+  }
+  $('nFam').addEventListener('change', renderNew); renderNew();
+
+  // landscape
+  (function(){
+    var V=['open','after','partner','depends','no'], col={open:'var(--now)',after:'var(--after)',partner:'var(--partner)',depends:'var(--cond)',no:'var(--no)'};
+    $('famBody').innerHTML = D.famorder.map(function(k){
+      var v=c.fam_fit[k]||{}, tot=c.fam[k]||0;
+      var bar='<div class="bar" role="img" aria-label="Fit shares for '+esc(FAMS[k])+'">'+V.map(function(x){ var n=v[x]||0; return n?'<i style="width:'+(100*n/tot)+'%;background:'+col[x]+'" title="'+FITL[x]+': '+n+'"></i>':''; }).join('')+'</div>';
+      return '<tr><td><b>'+esc(FAMS[k])+'</b></td><td class="mono">'+tot+'</td>'+V.map(function(x){ return '<td class="mono">'+(v[x]||0)+'</td>'; }).join('')+'<td>'+bar+'</td></tr>';
+    }).join('');
+    function bars(obj, el, keys, labels){
+      var max = Math.max.apply(null, keys.map(function(k){ return obj[k]||0; }));
+      $(el).innerHTML = keys.map(function(k){ var n=obj[k]||0; return '<div style="display:grid;grid-template-columns:130px 1fr 44px;gap:8px;align-items:center;margin:6px 0"><span>'+esc(labels[k])+'</span><div class="bar"><i style="width:'+(100*n/max)+'%;background:var(--accent)"></i></div><span class="mono" style="text-align:right">'+n+'</span></div>'; }).join('');
+    }
+    var rk = Object.keys(c.route).sort(function(a,b){ return c.route[b]-c.route[a]; });
+    bars(c.route, 'routeBars', rk, ROUTEL); bars(c.prio, 'prioBars', ['high','medium','low','none'], PRIOL);
+  })();
+
+  // about
+  $('satBody').innerHTML = D.passes.map(function(p){ return '<tr><td class="mono">'+p.n+'</td><td class="vtext">'+esc(p.how)+'</td><td class="mono">'+p.added+'</td><td class="mono">'+p.fit+'</td></tr>'; }).join('');
+
+  // tabs
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  function show(id){ tabs.forEach(function(t){ var on=t.id===id; t.setAttribute('aria-selected', String(on)); $(t.getAttribute('aria-controls')).hidden=!on; }); try{ localStorage.setItem('fundmap-tab', id); }catch(e){} }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.id); }); });
+  try{ var saved=localStorage.getItem('fundmap-tab'); if(saved && $(saved)) show(saved); }catch(e){}
+
+  renderPlan(); renderNotes();
+
+  // storage: the page database when this view has one, otherwise this browser
+  if(window.claude && typeof window.claude.use === 'function'){
+    window.claude.use('db').then(function(x){
+      db = x;
+      if(!db){ useLocal(); return; }
+      $('planStatus').textContent='Marks save as you click.'; $('planStatus').className='status ok';
+      db.collection('marks').onSnapshot(function(s){ var m={}; s.docs.forEach(function(d){ m[d.id]=d.data(); }); marks=m; renderPlan(); }, function(){ });
+      db.doc('page/notes').onSnapshot(function(s){ notes = s.exists ? Object.assign({}, s.data()) : {}; renderNotes(); }, function(){ });
+    }).catch(function(){ useLocal(); });
+  } else {
+    useLocal();
+  }
+})();
+</script>
+</body>
+</html>
